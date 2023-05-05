@@ -4,8 +4,6 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.animation.AnticipateInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -18,8 +16,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -105,9 +106,15 @@ fun bottomNavigationBar() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(70.dp)
+            .height(70.dp),
+        contentAlignment = Alignment.Center
     ) {
-        Row(modifier = Modifier.fillMaxSize().padding(top = 10.dp).background(color = Color(0xFFF3F4FF))) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 10.dp)
+                .background(color = Color(0xFFF3F4FF))
+        ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(0.5f)
@@ -144,13 +151,16 @@ fun bottomNavigationBar() {
 
             }
         }
-
         Image(
             painter = painterResource(id = R.drawable.btn_bottom_nv_2),
-            contentDescription = "홈"
+            contentDescription = "홈",
+            modifier =Modifier.size(100.dp),
+            alignment = Alignment.TopCenter
         )
 
     }
+
+
 }
 
 @Composable
