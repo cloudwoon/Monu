@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -23,12 +24,19 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Divider
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -40,8 +48,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -52,6 +65,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+        val fontFamily = FontFamily(
+            Font(R.font.mbc_1961_m),
+            Font(R.font.mbc_1961_gulim_m),
+            Font(R.font.nanum_square_neo_1),
+            Font(R.font.nanum_square_neo_2),
+            Font(R.font.nanum_square_neo_3),
+            Font(R.font.nanum_square_neo_4),
+            Font(R.font.nanum_square_neo_5)
+        )
 
 
         setContent {
@@ -62,13 +84,26 @@ class MainActivity : ComponentActivity() {
                 },
                 topBar = {
                     topAppBar()
+                },
+                floatingActionButton = {
+                    floatingButton()
                 }
 
             ) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.TopCenter
                 ) {
                     statusBar()
+                    Text(
+                        text = "뉴스 기사 요약을 시작해보세요 :)",
+                        color = Color.Black,
+                        fontFamily = fontFamily,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(top = 25.dp)
+                    )
+
+
                 }
 
             }
@@ -154,7 +189,7 @@ fun bottomNavigationBar() {
         Image(
             painter = painterResource(id = R.drawable.btn_bottom_nv_2),
             contentDescription = "홈",
-            modifier =Modifier.size(100.dp),
+            modifier = Modifier.size(100.dp),
             alignment = Alignment.TopCenter
         )
 
@@ -180,4 +215,31 @@ fun statusBar() {
 
         onDispose {}
     }
+}
+
+@Composable
+fun floatingButton() {
+    val contextForToast = LocalContext.current.applicationContext
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        FloatingActionButton(
+            modifier = Modifier
+                .padding(all = 10.dp)
+                .align(alignment = Alignment.BottomEnd),
+            onClick = {
+                Toast.makeText(contextForToast, "Click", Toast.LENGTH_SHORT)
+                    .show()
+            },
+            backgroundColor = Color(0xFFD4D6FF)
+        ) {
+            //Icon(imageVector = Icons.Filled.Add, contentDescription = "Add")
+            Image(
+                painter = painterResource(id = R.drawable.ftbtn_search),
+                contentDescription = "단어 찾기",
+                modifier = Modifier.size(48.dp)
+            )
+        }
+    }
+
+
 }
