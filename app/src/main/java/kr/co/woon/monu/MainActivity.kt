@@ -11,6 +11,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,7 +28,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.magnifier
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Button
@@ -42,6 +47,8 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -61,6 +68,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -76,6 +84,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+
         val fontFamily = FontFamily(
             Font(R.font.mbc_1961_m),
             Font(R.font.mbc_1961_gulim_m),
@@ -389,6 +398,29 @@ fun initialText() {
                     .height(200.dp),
                 backgroundColor = Color(0xFFFAFAFF)
             ) {
+                var text by remember { mutableStateOf("") }
+                var scrollState = rememberScrollState()
+
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(5.dp)
+                        .verticalScroll(scrollState)
+                ) {
+
+                    Text(text = "$text")
+
+                    BasicTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp),
+                        value = text,
+                        onValueChange = { text = it },
+                        decorationBox = {},
+                    )
+                }
+
 
             }
 
@@ -461,9 +493,18 @@ fun afterText() {
                     .height(200.dp),
                 backgroundColor = Color(0xFFFAFAFF)
             ) {
+                var scrollState = rememberScrollState()
+                var output = "결과출력"
 
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(5.dp)
+                        .verticalScroll(scrollState)
+                ) {
+                    Text(text = "$output", color = Color.Black, fontSize = 16.sp)
+                }
             }
-
         }
     }
 }
