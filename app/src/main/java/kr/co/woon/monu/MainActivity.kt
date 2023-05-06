@@ -7,9 +7,12 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,8 +25,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.magnifier
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonColors
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.ButtonElevation
+import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -46,6 +56,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
@@ -95,13 +106,26 @@ class MainActivity : ComponentActivity() {
                     contentAlignment = Alignment.TopCenter
                 ) {
                     statusBar()
-                    Text(
-                        text = "뉴스 기사 요약을 시작해보세요 :)",
-                        color = Color.Black,
-                        fontFamily = fontFamily,
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(top = 25.dp)
-                    )
+                    Column(
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "뉴스 기사 요약을 시작해보세요 :)",
+                            color = Color.Black,
+                            fontFamily = fontFamily,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(top = 25.dp)
+                        )
+                        KotlinWorldButtonWithDropDownMenu()
+                        initialTitle()
+                        initialText()
+                        afterTitle()
+                        afterText()
+                    }
 
 
                 }
@@ -227,7 +251,7 @@ fun floatingButton() {
                 .padding(all = 10.dp)
                 .align(alignment = Alignment.BottomEnd),
             onClick = {
-                Toast.makeText(contextForToast, "Click", Toast.LENGTH_SHORT)
+                Toast.makeText(contextForToast, "수정중", Toast.LENGTH_SHORT)
                     .show()
             },
             backgroundColor = Color(0xFFD4D6FF)
@@ -235,7 +259,7 @@ fun floatingButton() {
             //Icon(imageVector = Icons.Filled.Add, contentDescription = "Add")
             Image(
                 painter = painterResource(id = R.drawable.ftbtn_search),
-                contentDescription = "단어 찾기",
+                contentDescription = "단어 검색",
                 modifier = Modifier.size(48.dp)
             )
         }
@@ -243,3 +267,205 @@ fun floatingButton() {
 
 
 }
+
+@Composable
+fun KotlinWorldButtonWithDropDownMenu() {
+
+    val contextForToast = LocalContext.current.applicationContext
+
+
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.TopEnd
+    ) {
+        // 1. DropDownMenu의 펼쳐짐 상태 정의
+        var isDropDownMenuExpanded by remember { mutableStateOf(false) }
+
+        // 2. DropDownMenu의 Expanded 상태를 변경하기 위한 버튼 정의
+        Button(
+            onClick = { isDropDownMenuExpanded = true },
+            modifier = Modifier
+                .padding(end = 20.dp, top = 30.dp)
+                .border(
+                    width = 1.dp,
+                    color = Color(0xFF7B80FD),
+                    shape = RectangleShape
+                )
+                .background(color = Color(0xFFD8D9FF)),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color(0xFFD8D9FF),
+                contentColor = Color.White
+            ),
+            shape = RectangleShape,
+            elevation = ButtonDefaults.elevation(0.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "요약 문장 수", fontSize = 16.sp)
+                Image(
+                    painter = painterResource(id = R.drawable.ic_dropdown),
+                    contentDescription = "dropdown",
+                    modifier = Modifier.size(14.dp)
+                )
+            }
+        }
+        //3. DropDownMenu 정의
+        DropdownMenu(
+            modifier = Modifier
+                .wrapContentSize(),
+            expanded = isDropDownMenuExpanded,
+            onDismissRequest = { isDropDownMenuExpanded = false },
+
+            ) {
+            // 3.1. DropDownMenuItem을 정의하고 눌렸을 때 Hello가 출력되도록 함
+            DropdownMenuItem(onClick = {
+                Toast.makeText(contextForToast, "1", Toast.LENGTH_SHORT)
+                    .show()
+            }) {
+                Text(text = "1")
+
+
+            }
+            // 3.2. DropDownMenuItem을 정의하고 눌렸을 때 KotlinWorld가 출력되도록 함
+            DropdownMenuItem(onClick = {
+                Toast.makeText(contextForToast, "2", Toast.LENGTH_SHORT)
+                    .show()
+            }) {
+                Text(text = "2")
+
+            }
+
+            // 3.3. DropDownMenuItem을 정의하고 눌렸을 때 KotlinWorld가 출력되도록 함
+            DropdownMenuItem(onClick = {
+                Toast.makeText(contextForToast, "3", Toast.LENGTH_SHORT)
+                    .show()
+            }) {
+                Text(text = "3")
+
+            }
+        }
+    }
+}
+
+@Composable
+fun initialTitle() {
+
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.TopStart
+    ) {
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_main_title_1),
+            contentDescription = "원문 타이틀",
+            modifier = Modifier
+                .size(width = 250.dp, height = 40.dp)
+                .padding(start = 20.dp)
+        )
+    }
+}
+
+
+@Composable
+fun initialText() {
+    val contextForToast = LocalContext.current.applicationContext
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+            .padding(top = 10.dp),
+        contentAlignment = Alignment.TopCenter
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Card(
+                shape = RoundedCornerShape(20.dp),
+                border = BorderStroke(2.dp, Color(0xFFBBBEFE)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                backgroundColor = Color(0xFFFAFAFF)
+            ) {
+
+            }
+
+            Button(
+                onClick = {
+                    Toast.makeText(contextForToast, "요약하기 실행", Toast.LENGTH_SHORT)
+                        .show()
+                },
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(top = 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(0xFFD8D9FF),
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(size = 20.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(text = "요약하기", color = Color(0xFF7B80FD), fontSize = 16.sp)
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_summarize),
+                        contentDescription = "요약하기 이모티콘",
+                        modifier = Modifier
+                            .size(24.dp)
+                            .padding(start = 10.dp, top = 6.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun afterTitle() {
+
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.TopStart
+    ) {
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_main_title_2),
+            contentDescription = "원문 타이틀",
+            modifier = Modifier
+                .size(width = 250.dp, height = 30.dp)
+                .padding(start = 20.dp)
+        )
+    }
+}
+
+@Composable
+fun afterText() {
+    val contextForToast = LocalContext.current.applicationContext
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 10.dp)
+            .padding(horizontal = 20.dp),
+        contentAlignment = Alignment.TopCenter
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Card(
+                shape = RoundedCornerShape(20.dp),
+                border = BorderStroke(2.dp, Color(0xFFBBBEFE)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                backgroundColor = Color(0xFFFAFAFF)
+            ) {
+
+            }
+
+        }
+    }
+}
+
+
