@@ -2,6 +2,7 @@ package kr.co.woon.monu
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
@@ -75,6 +76,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.animation.doOnEnd
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -252,7 +254,7 @@ fun statusBar() {
 
 @Composable
 fun floatingButton() {
-    val contextForToast = LocalContext.current.applicationContext
+    val context = LocalContext.current.applicationContext
 
     Box(modifier = Modifier.fillMaxSize()) {
         FloatingActionButton(
@@ -260,8 +262,8 @@ fun floatingButton() {
                 .padding(all = 10.dp)
                 .align(alignment = Alignment.BottomEnd),
             onClick = {
-                Toast.makeText(contextForToast, "수정중", Toast.LENGTH_SHORT)
-                    .show()
+                val intent = Intent(context, SearchActivity::class.java) //화면 전환
+                context.startActivity(intent)
             },
             backgroundColor = Color(0xFFD4D6FF)
         ) {
