@@ -28,7 +28,6 @@ class SplashActivity : ComponentActivity() {
         }, 2000) //딜레이 타임 조절
 
         setContent {
-
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center

@@ -48,6 +48,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ComposableOpenTarget
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -57,6 +58,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -68,22 +70,21 @@ import androidx.compose.ui.unit.sp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
+val fontFamily = FontFamily(
+    Font(R.font.mbc_1961_m),
+    Font(R.font.mbc_1961_gulim_m),
+    Font(R.font.nanum_square_neo_1),
+    Font(R.font.nanum_square_neo_2),
+    Font(R.font.nanum_square_neo_3),
+    Font(R.font.nanum_square_neo_4),
+    Font(R.font.nanum_square_neo_5)
+)
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
-
-        val fontFamily = FontFamily(
-            Font(R.font.mbc_1961_m),
-            Font(R.font.mbc_1961_gulim_m),
-            Font(R.font.nanum_square_neo_1),
-            Font(R.font.nanum_square_neo_2),
-            Font(R.font.nanum_square_neo_3),
-            Font(R.font.nanum_square_neo_4),
-            Font(R.font.nanum_square_neo_5)
-        )
 
 
         setContent {
@@ -100,34 +101,11 @@ class MainActivity : ComponentActivity() {
                 }
 
             ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.TopCenter
-                ) {
-                    statusBar()
-                    Column(
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.CenterHorizontally,
 
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        Text(
-                            text = "뉴스 기사 요약을 시작해보세요 :)",
-                            color = Color.Black,
-                            fontFamily = fontFamily,
-                            fontSize = 18.sp,
-                            modifier = Modifier.padding(top = 25.dp)
-                        )
-                        KotlinWorldButtonWithDropDownMenu()
-                        initialTitle()
-                        initialText()
-                        afterTitle()
-                        afterText()
-                    }
+                statusBar()
+                homeScreen()
 
-
-                }
+                //settingScreen()
 
             }
         }
@@ -258,12 +236,11 @@ fun floatingButton() {
             },
             backgroundColor = Color(0xFFD4D6FF)
         ) {
-            //Icon(imageVector = Icons.Filled.Add, contentDescription = "Add")
             Image(
                 painter = painterResource(id = R.drawable.ftbtn_search),
                 contentDescription = "단어 검색",
                 modifier = Modifier.size(48.dp)
-            
+
             )
         }
     }
@@ -501,6 +478,60 @@ fun afterText() {
             }
         }
     }
+}
+
+
+@Composable
+fun homeScreen() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.TopCenter
+    ) {
+
+        Column(
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally,
+
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = "뉴스 기사 요약을 시작해보세요 :)",
+                color = Color.Black,
+                fontFamily = fontFamily,
+                fontSize = 18.sp,
+                modifier = Modifier.padding(top = 25.dp)
+            )
+            KotlinWorldButtonWithDropDownMenu()
+            initialTitle()
+            initialText()
+            afterTitle()
+            afterText()
+        }
+
+
+    }
+}
+
+@Composable
+fun settingScreen() {
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color(0xFFFFFFFF)),
+        contentAlignment = Alignment.TopCenter
+    ) {
+
+        Image(
+            painter = painterResource(id = R.drawable.bg_setting),
+            contentDescription = "세팅화면",
+            modifier = Modifier.fillMaxWidth(),
+            contentScale = ContentScale.FillWidth
+        )
+
+    }
+
 }
 
 
