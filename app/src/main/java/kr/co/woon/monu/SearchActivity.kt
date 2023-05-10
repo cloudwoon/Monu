@@ -67,13 +67,7 @@ class SearchActivity : ComponentActivity() {
                                         enabled = true,
                                         onClickLabel = "Clickable image",
                                         onClick = {
-                                            Toast
-                                                .makeText(
-                                                    this@SearchActivity,
-                                                    "Image clicked",
-                                                    Toast.LENGTH_SHORT
-                                                )
-                                                .show()
+                                            finish()
                                         }
                                     ),
 
