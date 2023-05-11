@@ -83,12 +83,10 @@ class SearchActivity : ComponentActivity() {
                             )
                         }
                     }
-
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-
                         Image(
                             painter = painterResource(id = R.drawable.bg_search),
                             contentDescription = "단어검색 배경",
